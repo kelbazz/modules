@@ -36,12 +36,12 @@ export default class Editor {
     this.editor.style.background = this.options.style.background;
     this.editor.style.borderRadius = "10px";
     this.editor.style.caretColor = this.options.style.default;
+    this.editor.style.cursor = "text";
     this.editor.style.padding = "10px";
     this.editor.style.fontFamily = "monospace";
     this.editor.style.overflow = "scroll";
-    this.editor.style.overflowWrap = this.options.breakCode
-      ? "break-word"
-      : "initial";
+    this.editor.style.overflowWrap = "break-word";
+    this.editor.style.whiteSpace = this.options.breakCode ? "normal": "nowrap";
     if (!this.options.onlyShow) this.editor.contentEditable = true;
 
     this.editor.spellcheck = false;
@@ -53,12 +53,13 @@ export default class Editor {
     highlight.style.pointerEvents = "none";
     highlight.style.overflow = "hidden";
     highlight.style.overflowWrap = this.editor.style.overflowWrap;
+    highlight.style.whiteSpace = this.editor.style.whiteSpace;
 
     const HFH = (htmlEl, htmlEl2 = htmlEl) => {
       let str1Reg = /"((?:\\"|(?!").)*)"/g,
         str2Reg = /'((?:\\'|(?!').)*)'/g,
         str3Reg = /`((?:\\`|(?!`).)*)`/g,
-        specialReg =
+        keywordReg =
           /\b(new|typeof|var|let|const|if|else|do|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
         typeReg =
           /\b(window|globalThis|self|this|Array|String|Object|Number|null|undefined|true|false|\$\b)(?!\w)/g,
@@ -83,8 +84,8 @@ export default class Editor {
         `<span data-hl-type="string" style="color: ${this.options.style.strings};">&#96;$1&#96;</span>`
       );
       parsed = parsed.replace(
-        specialReg,
-        `<span data-hl-type="special" style="color: ${this.options.style.keywords};">$&</span>`
+        keywordReg,
+        `<span data-hl-type="keyword" style="color: ${this.options.style.keywords};">$&</span>`
       );
       parsed = parsed.replace(
         typeReg,
@@ -116,6 +117,24 @@ export default class Editor {
         el.style.fontWheight = "inherit";
         delete el.dataset.hlType;
       });
+
+      htmlEl2
+        .querySelectorAll("span[data-hl-type='string']>span")
+        .forEach((el) => {
+          el.style.color = "inherit";
+          el.style.fontStyle = "inherit";
+          el.style.fontWheight = "inherit";
+          delete el.dataset.hlType;
+        });
+
+      htmlEl2
+        .querySelectorAll("span[data-hl-type='comment']>span")
+        .forEach((el) => {
+          el.style.color = "inherit";
+          el.style.fontStyle = "inherit";
+          el.style.fontWheight = "inherit";
+          delete el.dataset.hlType;
+        });
     };
 
     const loop = () => {
