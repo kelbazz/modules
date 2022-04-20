@@ -39,7 +39,7 @@ export default class Editor {
     this.editor.style.cursor = "text";
     this.editor.style.padding = "10px";
     this.editor.style.fontFamily = "monospace";
-    this.editor.style.overflow = "scroll";
+    this.editor.style.overflow = "auto";
     this.editor.style.overflowWrap = "break-word";
     this.editor.style.whiteSpace = this.options.breakCode ? "normal": "nowrap";
     if (!this.options.onlyShow) this.editor.contentEditable = true;
