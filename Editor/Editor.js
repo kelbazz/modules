@@ -39,7 +39,7 @@ export default class Editor {
     this.editor.style.cursor = "text";
     this.editor.style.padding = "10px";
     this.editor.style.fontFamily = "monospace";
-    this.editor.style.overflow = "auto";
+    this.editor.style.overflow = "scroll";
     this.editor.style.overflowWrap = "break-word";
     this.editor.style.whiteSpace = this.options.breakCode ? "normal": "nowrap";
     if (!this.options.onlyShow) this.editor.contentEditable = true;
@@ -56,11 +56,11 @@ export default class Editor {
     highlight.style.whiteSpace = this.editor.style.whiteSpace;
 
     const HFH = (htmlEl, htmlEl2 = htmlEl) => {
-      let str1Reg = /"((?:\\"|(?!").)*)"/g,
-        str2Reg = /'((?:\\'|(?!').)*)'/g,
-        str3Reg = /`((?:\\`|(?!`).)*)`/g,
+      let str1Reg = /((?<=(?<!\\)(?:\\{2})*))"((?:\\"|(?!").)*)"/g,
+        str2Reg = /((?<=(?<!\\)(?:\\{2})*))'((?:\\'|(?!').)*)'/g,
+        str3Reg = /((?<=(?<!\\)(?:\\{2})*))`((?:\\`|(?!`).)*)`/g,
         keywordReg =
-          /\b(new|typeof|var|let|const|if|else|do|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
+          /\b(import|from|new|typeof|var|let|const|if|else|do|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
         typeReg =
           /\b(window|globalThis|self|this|Array|String|Object|Number|null|undefined|true|false|\$\b)(?!\w)/g,
         methodReg =
@@ -73,15 +73,15 @@ export default class Editor {
       let string = htmlEl.innerHTML;
       let parsed = string.replace(
         str1Reg,
-        `<span data-hl-type="string" style="color: ${this.options.style.strings};">&quot;$1&quot;</span>`
+        `$1<span data-hl-type="string" style="color: ${this.options.style.strings};">&quot;$2&quot;</span>`
       );
       parsed = parsed.replace(
         str2Reg,
-        `<span data-hl-type="string" style="color: ${this.options.style.strings};">&apos;$1&apos;</span>`
+        `<span data-hl-type="string" style="color: ${this.options.style.strings};">$1&apos;$2&apos;</span>`
       );
       parsed = parsed.replace(
         str3Reg,
-        `<span data-hl-type="string" style="color: ${this.options.style.strings};">&#96;$1&#96;</span>`
+        `<span data-hl-type="string" style="color: ${this.options.style.strings};">$1&#96;$2&#96;</span>`
       );
       parsed = parsed.replace(
         keywordReg,

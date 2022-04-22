@@ -33,6 +33,16 @@
         align-items: flex-end;
       }
 
+      button {
+        padding: 10px;
+        font-weight: bold;
+        border-radius: 10px;
+        border: none;
+        background-color: #0f1020;
+        color: #fff;
+        margin: 5px 0 0 5px;
+      }
+
       #playground-container {
         width: 620px;
         align-items: stretch;
@@ -47,20 +57,31 @@
       });
 
       function run() {
-        document.querySelector("#playground").contentWindow.location.href =
-          "about:blank";
-        document
-          .querySelector("#playground")
-          .contentWindow.eval(editor.editor.innerText);
+        const ifr = document.querySelector("#playground");
+
+        ifr.contentWindow.location.href = "about:blank";
+        ifr.addEventListener(
+          "load",
+          () => {
+            document
+              .querySelector("#playground")
+              .contentWindow.eval(editor.editor.innerText);
+          },
+          { once: true }
+        );
       }
 
-      function loop() {
-        requestAnimationFrame(loop);
+      window.run = run;
+
+      editor.editor.addEventListener("keyup", () => {
         try {
           run();
         } catch {}
-      }
-      requestAnimationFrame(loop);
+      });
+
+      try {
+        run();
+      } catch {}
     </script>
   </head>
   <body>
