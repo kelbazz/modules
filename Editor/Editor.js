@@ -17,6 +17,7 @@ export default class Editor {
       onlyShow: options.onlyShow || false,
       autoCloseBrackets: options.autoCloseBrackets || true,
       breakCode: options.breakCode || false,
+      lineHeight: options.lineHeight || 20,
       style: {
         background: options.style.background || "#0f1020",
         default: options.style.default || "#ffffff",
@@ -42,6 +43,7 @@ export default class Editor {
     this.editor.style.overflow = "scroll";
     this.editor.style.overflowWrap = "break-word";
     this.editor.style.whiteSpace = this.options.breakCode ? "normal": "nowrap";
+    this.editor.style.lineHeight = this.options.lineHeight + "px";
     if (!this.options.onlyShow) this.editor.contentEditable = true;
 
     this.editor.spellcheck = false;
@@ -54,6 +56,8 @@ export default class Editor {
     highlight.style.overflow = "hidden";
     highlight.style.overflowWrap = this.editor.style.overflowWrap;
     highlight.style.whiteSpace = this.editor.style.whiteSpace;
+    highlight.style.lineHeight = this.options.lineHeight + "px";
+
 
     const HFH = (htmlEl, htmlEl2 = htmlEl) => {
       let str1Reg = /((?<=(?<!\\)(?:\\{2})*))"((?:\\"|(?!").)*)"/g,
