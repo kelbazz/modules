@@ -213,7 +213,7 @@ export default class Console {
       str2Reg = /((?<=(?<!\\)(?:\\{2})*))'((?:\\'|(?!').)*)'/g,
       str3Reg = /((?<=(?<!\\)(?:\\{2})*))`((?:\\`|(?!`).)*)`/g,
       keywordReg =
-        /\b(import|from|interface|new|typeof|var|let|const|if|else|do|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
+        /\b(import|from|new|typeof|var|let|const|if|else|do|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
       typeReg =
         /\b(window|globalThis|self|this|Array|String|Object|Number|null|undefined|true|false|\$\b)(?!\w)/g,
       methodReg = /\b(?![A-Z]|function|if|catch|while|for\b)\w+\s*(?=\(.*\))/g,
