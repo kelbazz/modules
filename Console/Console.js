@@ -261,16 +261,16 @@ export default class Console {
       `<span data-hl-type="comment" style="color: ${this.options.style.comments}; font-style: italic;">$&</span>`
     );
 
-    htmlEl2.innerHTML = parsed;
+    htmlEl.innerHTML = parsed;
 
-    htmlEl2.querySelectorAll("span[data-hl-type]>span").forEach((el) => {
+    htmlEl.querySelectorAll("span[data-hl-type]>span").forEach((el) => {
       el.style.color = "inherit";
       el.style.fontStyle = "inherit";
       el.style.fontWheight = "inherit";
       delete el.dataset.hlType;
     });
 
-    htmlEl2
+    htmlEl
       .querySelectorAll("span[data-hl-type='string']>span")
       .forEach((el) => {
         el.style.color = "inherit";
@@ -279,7 +279,7 @@ export default class Console {
         delete el.dataset.hlType;
       });
 
-    htmlEl2
+    htmlEl
       .querySelectorAll("span[data-hl-type='comment']>span")
       .forEach((el) => {
         el.style.color = "inherit";
