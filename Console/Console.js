@@ -113,8 +113,7 @@ export default class Console {
     };
 
     this.option.context.console.clear = () => {
-      this.option.container.querySelector(`#${this.id}-output`).innerHTML =
-        "";
+      this.option.container.querySelector(`#${this.id}-output`).innerHTML = "";
     };
 
     this.option.context.console.error = (...args) => {
@@ -160,9 +159,10 @@ export default class Console {
             else formatedString += `${entry[0]}: ${OTFS(entry[1], tabNb + 1)}`;
           } else if (typeof entry[1] === "function") {
             formatedString +=
-              `${entry[0]}: ` + entry[1].name.length != 0
+              `${entry[0]}: ` +
+              (entry[1].name.length != 0
                 ? `[function ${entry[1].name}]`
-                : "[function]";
+                : "[function]");
           } else {
             formatedString += `${entry[0]}: ${JSON.stringify(entry[1])}`;
           }
