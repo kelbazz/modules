@@ -80,7 +80,7 @@ export default class Console {
         width: 100%;
         padding-left: 10px;
 
-        font-family: 'Courier New', Courier, monospace;
+        font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
 
         background-color: #ffffff;
         border-top: 4px solid ${this.option.style.default};
@@ -100,7 +100,7 @@ export default class Console {
           flex: 1;
           padding: 10px;
 
-          font-family: "JetBrains Mono", 'Courier New', Courier, monospace;
+          font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
           border: none;
           outline: none;
         "
