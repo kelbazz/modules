@@ -5,7 +5,7 @@ export default class Console {
    */
   constructor(option) {
     // Define all the variables
-    this.option = option || {};
+    this.option = option;
     this.option.context = option.context || globalThis;
     if (!this.option.context.eval) throw Error("This context is invalid.");
 
