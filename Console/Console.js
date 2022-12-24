@@ -225,40 +225,40 @@ export default class Console {
     let string = htmlEl.innerHTML;
     let parsed = string.replace(
       str1Reg,
-      `$1<span data-hl-type="string" style="color: ${this.options.style.strings};">&quot;$2&quot;</span>`
+      `$1<span data-hl-type="string" style="color: ${this.option.style.strings};">&quot;$2&quot;</span>`
     );
     parsed = parsed.replace(
       str2Reg,
-      `<span data-hl-type="string" style="color: ${this.options.style.strings};">$1&apos;$2&apos;</span>`
+      `<span data-hl-type="string" style="color: ${this.option.style.strings};">$1&apos;$2&apos;</span>`
     );
     parsed = parsed.replace(
       str3Reg,
-      `<span data-hl-type="string" style="color: ${this.options.style.strings};">$1&#96;$2&#96;</span>`
+      `<span data-hl-type="string" style="color: ${this.option.style.strings};">$1&#96;$2&#96;</span>`
     );
     parsed = parsed.replace(
       keywordReg,
-      `<span data-hl-type="keyword" style="color: ${this.options.style.keywords};">$&</span>`
+      `<span data-hl-type="keyword" style="color: ${this.option.style.keywords};">$&</span>`
     );
     parsed = parsed.replace(
       typeReg,
-      `<span data-hl-type="type" style="color: ${this.options.style.types}; font-style: italic;">$&</span>`
+      `<span data-hl-type="type" style="color: ${this.option.style.types}; font-style: italic;">$&</span>`
     );
     parsed = parsed.replace(
       methodReg,
-      `<span data-hl-type="method" style="color: ${this.options.style.methods};">$&</span>`
+      `<span data-hl-type="method" style="color: ${this.option.style.methods};">$&</span>`
     );
     parsed = parsed.replace(
       propretyReg,
-      `<span data-hl-type="proprety" style="color: ${this.options.style.propreties};">$&</span>`
+      `<span data-hl-type="proprety" style="color: ${this.option.style.propreties};">$&</span>`
     );
     parsed = parsed.replace(
       classReg,
-      `<span data-hl-type="class" style="color: ${this.options.style.classes};">$&</span>`
+      `<span data-hl-type="class" style="color: ${this.option.style.classes};">$&</span>`
     );
 
     parsed = parsed.replace(
       commentReg,
-      `<span data-hl-type="comment" style="color: ${this.options.style.comments}; font-style: italic;">$&</span>`
+      `<span data-hl-type="comment" style="color: ${this.option.style.comments}; font-style: italic;">$&</span>`
     );
 
     htmlEl.innerHTML = parsed;
