@@ -26,7 +26,6 @@
 
       #context {
         position: absolute;
-        z-index: -1;
 
         width: 100%;
         height: 100%;
@@ -34,7 +33,7 @@
     </style>
 
     <iframe id="context" src="about:blank"></iframe>
-    <div class="console"></div>
+    <div class="console" style="z-index: 5;"></div>
 
     <script type="module" defer>
       import Console from "./Console.js";
