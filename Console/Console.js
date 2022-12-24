@@ -111,7 +111,7 @@ export default class Console {
     };
 
     this.option.context.console.clear = (...args) => {
-      this.option.container.querySelector(`#${this.id}output`).innerHTML =
+      this.option.container.querySelector(`#${this.id}-output`).innerHTML =
         "";
     };
 
