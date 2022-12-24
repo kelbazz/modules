@@ -1,4 +1,4 @@
-window.consoleStyleArgs = {
+const consoleStyleArgs = {
   background: "#333333",
   default: "#ffffff",
   error: "#e05f5f",
