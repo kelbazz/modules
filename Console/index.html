@@ -24,6 +24,8 @@
         align-items: center;
       }
     </style>
+
+    <iframe id="context" src="about:blank" style="display: none;"></iframe>
     <div class="console">
 
     </div>
@@ -31,8 +33,8 @@
     <script type="module" defer>
       import Console from "./Console.js";
 
-      new Console({
-        context: window,
+      window.con = new Console({
+        context: document.querySelector("#context").contentWindow,
         container: document.querySelector(".console"),
       });
     </script>

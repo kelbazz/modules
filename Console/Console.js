@@ -1,3 +1,19 @@
+window.consoleStyleArgs = {
+  background: "#333333",
+  default: "#ffffff",
+  error: "#e05f5f",
+  warn: "#dee059",
+  info: "#4eaefd",
+
+  strings: "#75cf5d",
+  keywords: "#a74d9d",
+  types: "#e05f5f",
+  methods: "#4eaefd",
+  propreties: "#e05f5f",
+  classes: "#dee059",
+  comments: "#bbc0c0"
+};
+
 export default class Console {
   /**
    * Create a console.
@@ -18,12 +34,7 @@ export default class Console {
     this.option.width = option.width ?? 500;
     this.option.height = option.height ?? 400;
 
-    this.option.style = option.style || new Object();
-    this.option.style.background = option.style.background || "#333333";
-    this.option.style.default = option.style.default || "#ffffff";
-    this.option.style.error = option.style.error || "#e05f5f";
-    this.option.style.warn = option.style.warn || "#dee059";
-    this.option.style.info = option.style.info || "#4eaefd";
+    this.option.style = Object.assign(consoleStyleArgs, option.style);
 
     this.history = [];
     let historyCount = 0;
@@ -213,7 +224,7 @@ export default class Console {
       str2Reg = /((?<=(?<!\\)(?:\\{2})*))'((?:\\'|(?!').)*)'/g,
       str3Reg = /((?<=(?<!\\)(?:\\{2})*))`((?:\\`|(?!`).)*)`/g,
       keywordReg =
-        /\b(import|from|new|typeof|var|let|const|if|else|do|interface|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
+        /\b(import|from|new|typeof|var|let|const|if|else|do|function|class|while|switch|try|catch|of|in|for|return|continue|break|throw\b)(?!\w)/g,
       typeReg =
         /\b(window|globalThis|self|this|Array|String|Object|Number|null|undefined|true|false|\$\b)(?!\w)/g,
       methodReg = /\b(?![A-Z]|function|if|catch|while|for\b)\w+\s*(?=\(.*\))/g,
