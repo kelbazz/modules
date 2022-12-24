@@ -46,7 +46,7 @@ export default class Console {
     this.option.container.style.borderRadius = "10px";
     this.option.container.style.overflow = "hidden";
     this.option.container.style.fontFamily =
-      '"Courier New", Courier, monospace';
+      '"JetBrains Mono", "Courier New", Courier, monospace';
     this.option.container.style.backgroundColor = option.style.background;
 
     let alphas = "abcdefghijklmnopqrstuvwxyz";
@@ -58,6 +58,8 @@ export default class Console {
     this.option.container.innerHTML = `
 
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+
       #${this.id}-output::-webkit-scrollbar {
           background: transparent;
           width: 24px;
@@ -98,7 +100,7 @@ export default class Console {
           flex: 1;
           padding: 10px;
 
-          font-family: 'Courier New', Courier, monospace;
+          font-family: "JetBrains Mono", 'Courier New', Courier, monospace;
           border: none;
           outline: none;
         "
