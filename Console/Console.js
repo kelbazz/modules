@@ -111,8 +111,8 @@ export default class Console {
     };
 
     this.option.context.console.clear = (...args) => {
-      this.option.container.querySelector("#output").innerHTML = "";
-      return "Console cleared.";
+      this.option.container.querySelector(`#${this.id}output`).innerHTML =
+        "";
     };
 
     this.option.context.console.error = (...args) => {
@@ -226,8 +226,7 @@ export default class Console {
             this.createTile("(x) " + err, this.option.style.error);
           }
 
-          this.option.container.querySelector(`#${this.id}-input`).value =
-            "";
+          this.option.container.querySelector(`#${this.id}-input`).value = "";
         } else if (e.code === "ArrowUp") {
           if (!this.history.length > 0 || historyCount >= this.history.length)
             return;
@@ -360,15 +359,12 @@ export default class Console {
 
     if (syntaxHl) this.#HFH(tile);
 
-    this.option.container
-      .querySelector(`#${this.id}-output`)
-      .appendChild(tile);
+    this.option.container.querySelector(`#${this.id}-output`).appendChild(tile);
     this.option.container
       .querySelector(`#${this.id}-output`)
       .scrollTo(
         0,
-        this.option.container.querySelector(`#${this.id}-output`)
-          .scrollHeight
+        this.option.container.querySelector(`#${this.id}-output`).scrollHeight
       );
   }
 }
