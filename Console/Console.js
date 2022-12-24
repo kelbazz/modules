@@ -11,7 +11,7 @@ const consoleStyleArgs = {
   methods: "#4eaefd",
   propreties: "#e05f5f",
   classes: "#dee059",
-  comments: "#bbc0c0"
+  comments: "#bbc0c0",
 };
 
 export default class Console {
@@ -49,8 +49,29 @@ export default class Console {
       '"Courier New", Courier, monospace';
     this.option.container.style.backgroundColor = option.style.background;
 
+    let alphas = "abcdefghijklmnopqrstuvwxyz";
+    let id = "";
+    for (let i = 0; i < 4; i++)
+      id += alphas[Math.floor(Math.random() * alphas.length)];
+    this.id = id;
+
     this.option.container.innerHTML = `
-    <div id="output" style="flex: 1; overflow: hidden auto; scroll-behavior: smooth;"></div>
+
+    <style>
+      #${this.id}-output::-webkit-scrollbar {
+          background: transparent;
+          width: 24px;
+      }
+      #${this.id}-output::-webkit-scrollbar-thumb {
+          border: 10px solid transparent;
+          box-shadow: inset 0 0 10px 10px #fff;
+      }
+      #${this.id}-output::-webkit-scrollbar-track {
+          border: 10px solid transparent;
+          box-shadow: inset 0 0 10px 10px #bbc0c0;
+      }
+    </style>
+    <div id="${this.id}-output" style="flex: 1; overflow: hidden auto; scroll-behavior: smooth;"></div>
     <div
       id="input-container"
       style="
@@ -71,7 +92,7 @@ export default class Console {
       ><input
         placeholder="write some javascript..."
         autocomplete="off"
-        id="input"
+        id="${this.id}-input"
         type="text"
         style="
           flex: 1;
@@ -121,7 +142,10 @@ export default class Console {
             if (obj === entry[1]) formatedString += "[recursive]";
             else formatedString += OTFS(entry[1], tabNb + 1);
           } else if (typeof entry[1] === "function") {
-            formatedString += "[function]";
+            formatedString +=
+              entry[1].name.length != 0
+                ? `[function ${entry[1].name}]`
+                : "[anonymous function]";
           } else {
             formatedString += JSON.stringify(entry[1]);
           }
@@ -133,7 +157,10 @@ export default class Console {
             if (obj === entry[1]) formatedString += `${entry[0]}: [recursive]`;
             else formatedString += `${entry[0]}: ${OTFS(entry[1], tabNb + 1)}`;
           } else if (typeof entry[1] === "function") {
-            formatedString += `${entry[0]}: [function]`;
+            formatedString +=
+              entry[1].name.length != 0
+                ? `[function ${entry[1].name}]`
+                : "[anonymous function]";
           } else {
             formatedString += `${entry[0]}: ${JSON.stringify(entry[1])}`;
           }
@@ -150,16 +177,18 @@ export default class Console {
     }
 
     this.option.container
-      .querySelector("#input")
+      .querySelector("#" + this.id + "-input")
       .addEventListener("keydown", async (e) => {
         if (e.code === "Enter") {
           this.createTile(
-            ">>> " + this.option.container.querySelector("#input").value,
+            ">>> " +
+              this.option.container.querySelector("#" + this.id + "-input")
+                .value,
             this.option.style.default,
             true
           );
           this.history.unshift(
-            this.option.container.querySelector("#input").value
+            this.option.container.querySelector("#" + this.id + "-input").value
           );
           historyCount = 0;
 
@@ -167,7 +196,8 @@ export default class Console {
 
           try {
             evaluated = await this.option.context.eval(
-              this.option.container.querySelector("#input").value
+              this.option.container.querySelector("#" + this.id + "-input")
+                .value
             );
             if (typeof evaluated === "object") {
               try {
@@ -196,19 +226,22 @@ export default class Console {
             this.createTile("(x) " + err, this.option.style.error);
           }
 
-          this.option.container.querySelector("#input").value = "";
+          this.option.container.querySelector(`#${this.id}-input`).value =
+            "";
         } else if (e.code === "ArrowUp") {
           if (!this.history.length > 0 || historyCount >= this.history.length)
             return;
 
-          this.option.container.querySelector("#input").value =
+          this.option.container.querySelector(`#${this.id}-input`).value =
             this.history[historyCount];
           historyCount++;
         } else if (e.code === "ArrowDown") {
           if (historyCount <= 0)
-            return (this.option.container.querySelector("#input").value = "");
+            return (this.option.container.querySelector(
+              "#" + this.id + "-input"
+            ).value = "");
           if (!this.history.length > 0) return;
-          this.option.container.querySelector("#input").value =
+          this.option.container.querySelector(`#${this.id}-input`).value =
             this.history[historyCount - 1];
           historyCount--;
         } else {
@@ -216,7 +249,7 @@ export default class Console {
         }
       });
 
-    this.createTile("JS console ready.", this.option.style.warn);
+    this.option.onready?.(this);
   }
 
   #HFH(htmlEl) {
@@ -327,9 +360,15 @@ export default class Console {
 
     if (syntaxHl) this.#HFH(tile);
 
-    this.option.container.querySelector("#output").appendChild(tile);
     this.option.container
-      .querySelector("#output")
-      .scrollTo(0, this.option.container.querySelector("#output").scrollHeight);
+      .querySelector(`#${this.id}-output`)
+      .appendChild(tile);
+    this.option.container
+      .querySelector(`#${this.id}-output`)
+      .scrollTo(
+        0,
+        this.option.container.querySelector(`#${this.id}-output`)
+          .scrollHeight
+      );
   }
 }

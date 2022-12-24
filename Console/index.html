@@ -39,9 +39,13 @@
     <script type="module" defer>
       import Console from "./Console.js";
 
-      window.con = new Console({
+      new Console({
         context: document.querySelector("#context").contentWindow,
         container: document.querySelector(".console"),
+
+        onready(ctx) {
+          ctx.createTile("JS console ready.", ctx.option.style.warn);
+        },
       });
     </script>
   </body>
