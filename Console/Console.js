@@ -1,16 +1,16 @@
 const consoleStyleArgs = {
-  background: "#333333",
+  background: "#0f1020",
   default: "#ffffff",
   error: "#e05f5f",
-  warn: "#dee059",
-  info: "#4eaefd",
+  warn: "#ffe856",
+  info: "#0099ff",
 
-  strings: "#75cf5d",
-  keywords: "#a74d9d",
+  strings: "#71ec5f",
+  keywords: "#9744e3",
   types: "#e05f5f",
-  methods: "#4eaefd",
+  methods: "#0099ff",
   propreties: "#e05f5f",
-  classes: "#dee059",
+  classes: "#ffe856",
   comments: "#bbc0c0",
 };
 
@@ -108,29 +108,11 @@ export default class Console {
     </div>
     `;
 
-    this.option.context.console.log = (...args) => {
-      this.createTile(args.join(", "));
-    };
-
-    this.option.context.console.clear = () => {
-      this.option.container.querySelector(`#${this.id}-output`).innerHTML = "";
-    };
-
-    this.option.context.console.error = (...args) => {
-      this.createTile("(x) " + args.join(", "), option.style.error);
-    };
-
-    this.option.context.console.warn = (...args) => {
-      this.createTile("/!\\ " + args.join(", "), option.style.warn);
-    };
-
-    this.option.context.console.info = (...args) => {
-      this.createTile("(i) " + args.join(", "), option.style.info);
-    };
-
     function OTFS(obj, tabNb = 1) {
       if (typeof obj !== "object") throw Error("Argument must be an object.");
       if (!Object.keys(obj).length) return Array.isArray(obj) ? "[]" : "{}";
+      if (obj instanceof Window) return "[instance of Window]";
+      
       let tab = "";
       for (let i = 0; i < tabNb; i++) {
         tab += "  ";
@@ -140,7 +122,7 @@ export default class Console {
       if (Array.isArray(obj)) {
         Object.entries(obj).forEach((entry) => {
           if (typeof entry[1] === "object") {
-            if (obj === entry[1]) formatedString += "[recursive]";
+            if (obj === entry[1]) formatedString += "[circular]";
             else formatedString += OTFS(entry[1], tabNb + 1);
           } else if (typeof entry[1] === "function") {
             formatedString +=
@@ -155,7 +137,7 @@ export default class Console {
       } else {
         Object.entries(obj).forEach((entry) => {
           if (typeof entry[1] === "object") {
-            if (obj === entry[1]) formatedString += `${entry[0]}: [recursive]`;
+            if (obj === entry[1]) formatedString += `${entry[0]}: [circular]`;
             else formatedString += `${entry[0]}: ${OTFS(entry[1], tabNb + 1)}`;
           } else if (typeof entry[1] === "function") {
             formatedString +=
@@ -177,6 +159,42 @@ export default class Console {
         : "\n" + tab.slice(2) + "}";
       return formatedString;
     }
+
+    this.option.context.console.clear = () => {
+      this.option.container.querySelector(`#${this.id}-output`).innerHTML = "";
+    };
+
+    this.option.context.console.log = (... args) => {
+      const newArgs = [];
+      args.forEach((arg) =>
+        newArgs.push(typeof arg === "object" ? OTFS(arg) : arg)
+      );
+      this.createTile(newArgs.join(", "));
+    };
+
+    this.option.context.console.error = (...args) => {
+      const newArgs = [];
+      args.forEach((arg) =>
+        newArgs.push(typeof arg === "object" ? OTFS(arg) : arg)
+      );
+      this.createTile("(x): " + newArgs.join(", "), option.style.error);
+    };
+
+    this.option.context.console.warn = (...args) => {
+      const newArgs = [];
+      args.forEach((arg) =>
+        newArgs.push(typeof arg === "object" ? OTFS(arg) : arg)
+      );
+      this.createTile("/!\\: " + newArgs.join(", "), option.style.warn);
+    };
+
+    this.option.context.console.info = (...args) => {
+      const newArgs = [];
+      args.forEach((arg) =>
+        newArgs.push(typeof arg === "object" ? OTFS(arg) : arg)
+      );
+      this.createTile("(i): " + newArgs.join(", "), option.style.info);
+    };
 
     this.option.container
       .querySelector("#" + this.id + "-input")
@@ -225,7 +243,7 @@ export default class Console {
               );
             }
           } catch (err) {
-            this.createTile("(x) " + err, this.option.style.error);
+            this.option.context.console.error(`${err.name}: ${err.message}`);
           }
 
           this.option.container.querySelector(`#${this.id}-input`).value = "";

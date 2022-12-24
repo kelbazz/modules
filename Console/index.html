@@ -42,6 +42,9 @@
         context: document.querySelector("#context").contentWindow,
         container: document.querySelector(".console"),
 
+        height: 500,
+        width: 700,
+
         onready(ctx) {
           ctx.createTile("JS console ready.", ctx.option.style.warn);
         },
