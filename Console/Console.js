@@ -112,7 +112,7 @@ export default class Console {
       this.createTile(args.join(", "));
     };
 
-    this.option.context.console.clear = (...args) => {
+    this.option.context.console.clear = () => {
       this.option.container.querySelector(`#${this.id}-output`).innerHTML =
         "";
     };
@@ -147,7 +147,7 @@ export default class Console {
             formatedString +=
               entry[1].name.length != 0
                 ? `[function ${entry[1].name}]`
-                : "[anonymous function]";
+                : "[function]";
           } else {
             formatedString += JSON.stringify(entry[1]);
           }
@@ -160,9 +160,9 @@ export default class Console {
             else formatedString += `${entry[0]}: ${OTFS(entry[1], tabNb + 1)}`;
           } else if (typeof entry[1] === "function") {
             formatedString +=
-              entry[1].name.length != 0
+              `${entry[0]}: ` + entry[1].name.length != 0
                 ? `[function ${entry[1].name}]`
-                : "[anonymous function]";
+                : "[function]";
           } else {
             formatedString += `${entry[0]}: ${JSON.stringify(entry[1])}`;
           }
